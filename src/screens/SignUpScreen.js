@@ -1,31 +1,32 @@
 import React, {useContext} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import { Text} from 'react-native-elements';
+import {View, StyleSheet} from 'react-native';
+import {NavigationEvents} from 'react-navigation';
 import AuthForm from '../components/AuthForm';
-import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 
+import NavLink from '../components/NavLink';
 
 
 const SignUpScreen = ({navigation}) => {
 
-    const {state, signup} = useContext(AuthContext)
+    const {state, signup, clearErrorMessage} = useContext(AuthContext);
 
+ 
     return (
         <View style={styles.container}>
+              <NavigationEvents 
+                onWillBlur={clearErrorMessage}
+            />
             <AuthForm
             headerText="Cree una cuenta en Trucker"
             errorMessage={state.errorMessage}
-            submitButtonText="Sign Up"
+            submitButtonText="Registrarse"
             onSubmit={signup}
             />
-            <TouchableOpacity 
-            onPress={() => navigation.navigate('SignIn')}
-            >
-                <Spacer>
-                <Text style={styles.link}>Ya tiene cuenta? Inicie sesión</Text>
-                </Spacer>
-            </TouchableOpacity>
+          <NavLink
+          routeName="SignIn"
+          text="Ya tiene cuenta? Inicie sesión"
+          />
         </View>
     )
 };
@@ -40,11 +41,8 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         justifyContent: 'center',
-        marginBottom: 200
+        marginBottom: 100
     },
-    link: {
-       color: 'blue'
-    }
 });
 
 export default SignUpScreen;
